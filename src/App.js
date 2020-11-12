@@ -8,20 +8,38 @@ import Twoots from "./components/Twoots";
 
 const App = () => {
   const [twoots, setTwoots] = useState([
-    { user: "Jess", text: "This is a text", date: new Date("2020-11-11") },
     {
+      id: 1,
+      user: "Jess",
+      text: "This is a text",
+      date: new Date("2020-11-11"),
+    },
+    {
+      id: 2,
       user: "Matt",
       text: "This is a text again",
       date: new Date("2020-11-11"),
     },
   ]);
-
+  // !nextId() is generating a next id for a new twoot
+  const nextId = () => {
+    return (
+      twoots.reduce((acc, cur) => (acc.id > cur.id ? acc : cur), {
+        id: 0,
+      }).id + 1
+    );
+  };
   const addTwoot = (twoot) => {
     setTwoots([...twoots, twoot]);
   };
 
-  const findTwootByIndex = (id) => {
-    return twoots[id];
+  const findTwootById = (id) => {
+    return twoots.find((p) => p.id === parseInt(id));
+  };
+
+  const updateTwoot = (inTwoot) => {
+    const updatedTwoot = twoots.map((t) => (t.id === inTwoot.id ? inTwoot : t));
+    setTwoots(updatedTwoot);
   };
   return (
     <div>
@@ -30,18 +48,28 @@ const App = () => {
         <Switch>
           <Route
             path="/create"
-            render={(props) => <AddTwoot {...props} addTwoot={addTwoot} />}
+            render={(props) => (
+              <AddTwoot {...props} addTwoot={addTwoot} nextId={nextId()} />
+            )}
           />
-          <Route exact path="/show" render={(props) => <Twoot {...props} />} />
-          <Route path="/edit" render={(props) => <EditTwoot {...props} />} />
+          {/* <Route exact path="/show" render={(props) => <Twoot {...props} />} /> */}
+          <Route
+            path="/edit/:id"
+            render={(props) => (
+              <EditTwoot
+                {...props}
+                twoot={findTwootById(props.match.params.id)}
+                updateTwoot={updateTwoot}
+              />
+            )}
+          />
 
           <Route
             path="/show/:id"
             render={(props) => (
-              <Twoot
-                {...props}
-                twoot={findTwootByIndex(props.match.params.id)}
-              />
+              <Twoot 
+              {...props}
+               twoot={findTwootById(props.match.params.id)} />
             )}
           />
 

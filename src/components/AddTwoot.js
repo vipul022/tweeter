@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const AddTwoot = ({ addTwoot, history }) => {
+const AddTwoot = ({ addTwoot, history, nextId }) => {
   const initialFormState = {
     user: "",
     text: "",
@@ -13,10 +13,12 @@ const AddTwoot = ({ addTwoot, history }) => {
 
     setFormState({ ...formState, [name]: value });
   };
+  // console.log("formState=>,", formState);
 
   const handleSubmit = (event) => {
     event.preventDefault();
     const newTwoot = {
+      id: nextId,
       user: formState.user,
       text: formState.text,
       date: new Date(),
@@ -32,7 +34,7 @@ const AddTwoot = ({ addTwoot, history }) => {
           required
           type="text"
           name="user"
-          placeholder="gimme a title"
+          placeholder="Enter user name..."
           onChange={handleChange}
         />
 
