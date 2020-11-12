@@ -38,8 +38,15 @@ const App = () => {
   };
 
   const updateTwoot = (inTwoot) => {
-    const updatedTwoot = twoots.map((t) => (t.id === inTwoot.id ? inTwoot : t));
-    setTwoots(updatedTwoot);
+    const updatedTwoots = twoots.map((t) =>
+      t.id === inTwoot.id ? inTwoot : t
+    );
+    setTwoots(updatedTwoots);
+  };
+
+  const deleteTwoot = (id) => {
+    const updatedTwoots = twoots.filter((t) => t.id !== parseInt(id));
+    setTwoots(updatedTwoots);
   };
   return (
     <div>
@@ -67,9 +74,12 @@ const App = () => {
           <Route
             path="/show/:id"
             render={(props) => (
-              <Twoot 
-              {...props}
-               twoot={findTwootById(props.match.params.id)} />
+              <Twoot
+                {...props}
+                twoot={findTwootById(props.match.params.id)}
+                showControls
+                deleteTwoot={deleteTwoot}
+              />
             )}
           />
 

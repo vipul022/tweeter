@@ -6,9 +6,11 @@ const EditTwoot = ({ twoot, updateTwoot, history }) => {
     text: "",
   };
 
+  // console.log("history=>", history);
   const [formState, setFormState] = useState(initialFormState);
 
   useEffect(() => {
+    console.log("inside useEffect");
     twoot &&
       setFormState({
         user: twoot.user,
@@ -19,6 +21,7 @@ const EditTwoot = ({ twoot, updateTwoot, history }) => {
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormState({ ...formState, [name]: value });
+    // console.log("formState", formState);
   };
 
   const handleSubmit = (event) => {
@@ -30,7 +33,7 @@ const EditTwoot = ({ twoot, updateTwoot, history }) => {
       date: new Date(),
     };
     updateTwoot(updatedTwoot);
-    history.push("/");
+    history.push(`/show/${twoot.id}`);
   };
   return (
     <div>
@@ -41,7 +44,7 @@ const EditTwoot = ({ twoot, updateTwoot, history }) => {
           type="text"
           name="user"
           placeholder="Enter user name..."
-          value={twoot.user}
+          value={formState.user}
           onChange={handleChange}
         />
 
@@ -51,7 +54,7 @@ const EditTwoot = ({ twoot, updateTwoot, history }) => {
           type="text"
           name="text"
           placeholder="Enter text..."
-          value={twoot.text}
+          value={formState.text}
           onChange={handleChange}
         />
 
